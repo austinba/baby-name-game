@@ -10,14 +10,30 @@ pinotnoir: CC5F4C
 @import 'https://fonts.googleapis.com/css?family=Baloo+Bhai';
 html, body, body>div {
   height: 100%;
-}
-.jumbotron {
   font-family: 'Baloo Bhai', cursive;
+}
+h1 {
+  display: block;
   text-align: center;
   font-size: 36px;
   padding-top: 10px;
   padding-bottom: 10px;
   border-radius: 7px 20px 40px 30px;
+}
+h2 {
+  display: block;
+  font-size: 25px;
+  text-align: center;
+}
+.current-name {
+  display: block;
+  font-size: 50px;
+  text-align: center;
+  margin-top: 40px;
+}
+.current-name>p {
+  line-height: 80%;
+  overflow-x: hidden;
 }
 .bc1 {
   background-color: #4C79CC;
