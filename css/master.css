@@ -31,13 +31,18 @@ h2 {
 }
 .current-name {
   display: block;
-  font-size: 50px;
+  font-size: 90px;
   text-align: center;
   margin-top: 40px;
   position: absolute;
   bottom: 50%;
   margin-left: 50%;
   transform: translate(-50%, 30%);
+}
+@media (max-width: 600px) {
+  .current-name {
+    font-size: 50px;
+  }
 }
 .current-name>p {
   line-height: 80%;
