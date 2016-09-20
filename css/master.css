@@ -11,11 +11,14 @@ pinotnoir: CC5F4C
 html, body, body>div {
   height: 100%;
   font-family: 'Baloo Bhai', cursive;
+  padding: 0;
+  margin: 0;
 }
 h1 {
   display: block;
   text-align: center;
   font-size: 36px;
+  margin-top: 0;
   padding-top: 10px;
   padding-bottom: 10px;
   border-radius: 7px 20px 40px 30px;
@@ -24,16 +27,48 @@ h2 {
   display: block;
   font-size: 25px;
   text-align: center;
+  margin-bottom: 26px;
 }
 .current-name {
   display: block;
   font-size: 50px;
   text-align: center;
   margin-top: 40px;
+  position: absolute;
+  bottom: 50%;
+  margin-left: 50%;
+  transform: translate(-50%, 30%);
 }
 .current-name>p {
   line-height: 80%;
-  overflow-x: hidden;
+  overflow: hidden;
+}
+.love-button {
+  display: block;
+  text-align: center;
+  font-size: 30px;
+  margin-top: 30px;
+  margin-left: 50%;
+  transform: translate(-50%);
+  position: absolute;
+  bottom: 55px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 7px 20px 40px 30px;
+  width: 50%;
+}
+.next-button {
+  display: block;
+  text-align: center;
+  font-size: 20px;
+  margin-top: 30px;
+  margin-left: 50%;
+  position: absolute;
+  bottom: 5px;
+  transform: translate(-50%);
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 50%;
 }
 .bc1 {
   background-color: #4C79CC;
