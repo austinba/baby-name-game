@@ -1,0 +1,51 @@
+/*
+https://color.adobe.com/create/color-wheel/?base=2&rule=Compound&selected=2&name=My%20Color%20Theme&mode=rgb&rgbvalues=0.2979824669829174,0.47359543648049524,0.8,0.36608813097897525,0.4479138745394353,0.6,0.47247808372864675,0.934655967954364,1,1,0.803585424250129,0.7224780837286467,0.8,0.3714890235934551,0.2979824669829174&swatchOrder=0,1,2,3,4
+blue: #4C79CC
+grey-blue: 5D7299
+teal: 78EEFF
+pink: #FFCDB8
+pinotnoir: CC5F4C
+
+*/
+@import 'https://fonts.googleapis.com/css?family=Baloo+Bhai';
+html, body, body>div {
+  height: 100%;
+}
+.jumbotron {
+  font-family: 'Baloo Bhai', cursive;
+  text-align: center;
+  font-size: 36px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 7px 20px 40px 30px;
+}
+.bc1 {
+  background-color: #4C79CC;
+}
+.bc2 {
+  background-color: #5D7299;
+}
+.bc3 {
+  background-color: #78EEFF;
+}
+.bc4 {
+  background-color: #FFCDB8;
+}
+.bc5 {
+  background-color: #CC5F4C;
+}
+.c1 {
+  color: #4C79CC;
+}
+.c2 {
+  color: #5D7299;
+}
+.c3 {
+  color: #78EEFF;
+}
+.c4 {
+  color: #FFCDB8;
+}
+.c5 {
+  color: #CC5F4C;
+}
