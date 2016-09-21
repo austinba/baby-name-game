@@ -45,9 +45,19 @@ var setState = function(context, value) {
     state.waitingOnServer = true;
   }
 
+  else if (context === 'waitingOnServer') {
+    state.waitingOnServer = !!value;
+  }
+  else if (context === 'matchedNames') {
+    state.matchedNames = value;
+  }
+  else if (context === 'foundEmail') {
+    state.foundEmail = !!value;
+    console.log(state.foundEmail);
+  }
   // Form Validation / Response
   playButtonContentChanged = false;
-  if (context === 'lastName' || context === 'email') {
+  if (context === 'lastName' || context === 'email' || context === 'foundEmail') {
     if(state.lastName === '' || state.email === '') {
       if(state.playButtonContent !== 'incomplete-text') {
         state.playButtonContent = 'incomplete-text';
@@ -103,6 +113,7 @@ $(document).ready(function() {
     setState('email', this.value);
     if(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(state.email)) {
       $.get( 'matches-so-far', { email: state.email }, function(data) {
+        setState('waitingOnServer', false);
         setState('matchedNames', data.matchedNames);
         setState('foundEmail', data.foundEmail);
       });
