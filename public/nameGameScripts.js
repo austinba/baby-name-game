@@ -36,21 +36,23 @@ function getCookie(cname) {
 function validateEmail(email) {
   return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
 }
-var updateNamesQueues = function() {
+function updateNamesQueues() {
   if(state.girlNamesQueue.length < 10) {
     $.get('girl-names', { count: '10' }, function(data) {
       if(Array.isArray(data.names)) state.girlNamesQueue.concat(data.names);
+      setState('currentName', data.names[0]);
     });
   }
   if(state.boyNamesQueue.length < 10) {
     $.get('boy-names', { count: '10' }, function(data) {
       if(Array.isArray(data.names)) state.boyNamesQueue.concat(data.names);
+      setState('currentName', data.names[0]);
     });
   }
 }
 updateNamesQueues();
 
-var setState = function(context, value) {
+function setState(context, value) {
 
   // Toggle Parent Button
   if (context === 'parent') {
@@ -105,6 +107,13 @@ var setState = function(context, value) {
   else if (context === 'foundEmail') {
     state.foundEmail = !!value;
   }
+
+  // gamme play
+  else if (context === 'currentName') {
+    state.currentName = value;
+    $('#first-name-display').text(state.currentName);
+  }
+
   // Form Validation / Response
   playButtonContentChanged = false;
   if (context === 'lastName' || context === 'email' || context === 'foundEmail') {

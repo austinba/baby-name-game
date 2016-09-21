@@ -3,6 +3,7 @@ var app = express();
 var path = require('path');
 var fs = require('fs');
 var bodyParser = require('body-parser');
+var db = require('./db');
 
 var boyNames = (fs.readFileSync('names/boy').toString() || '').split('\n');
 var girlNames = (fs.readFileSync('names/girl').toString() || '').split('\n');
@@ -23,12 +24,16 @@ app.get('/matches-so-far', function(req, res) {
 });
 
 app.post('/last-name', function(req, res) {
-  console.log(req.body.email, req.body.lastName);
-  res.send('Received last name');
+  db.updateUser( req.body.email, 'lastName', req.body.lastName, function(error) {
+    if(error) res.status(500).send(error);
+    else res.send('Saved to db');
+  });
 });
 app.post('/gender', function(req, res) {
-  console.log(req.body.email, req.body.gender);
-  res.send('Received gender');
+  db.updateUser( req.body.email, 'gender', req.body.gender, function(error) {
+    if(error) res.status(500).send(error);
+    else res.send('Saved to db');
+  });
 });
 
 app.get('/girl-names', function(req, res) {
@@ -38,7 +43,7 @@ app.get('/girl-names', function(req, res) {
   });
   res.send({
     names: namesToSend
-  })
+  });
 });
 
 app.get('/boy-names', function(req, res) {
@@ -48,7 +53,7 @@ app.get('/boy-names', function(req, res) {
   });
   res.send({
     names: namesToSend
-  })
+  });
 });
 
 
