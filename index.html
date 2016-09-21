@@ -15,9 +15,12 @@
         <h1>Name Game</h1>
         <div class="header-subtitle"><em>(Click here to see matches)</em></div>
         <div class="detail-view">
-          <p>I am the</p>
-          <div id="future-mommy-button" class="button bc4 button-unselected">Mommy</div>
-          <div id="future-daddy-button" class="button bc4">Daddy</div>
+          <p>I am the (select one)</p>
+          <div id="future-mommy-button" class="button bc4">Mommy</div>
+          <div id="future-daddy-button" class="button bc4 button-unselected">Daddy</div>
+          <p>We are having a</p>
+          <div id="boy-button" class="button bc4">Boy</div>
+          <div id="girl-button" class="button bc4 button-unselected">Girl</div>
           <p>Baby's last name:<br />
           </p>
           <input type="text" id="last-name" placeholder="Because it helps to see the full name.">
@@ -36,7 +39,7 @@
             </big></big>
           </div>
           <div class="names-list">
-            <p>Your matches so far:</p>
+            <p><big>Your matches so far:</big></p>
             <p>Albert</p>
             <p>Tony</p>
             <p>Bubba</p>
@@ -56,7 +59,7 @@
       <!-- Gameplay Section -->
       <section class="current-name">
         <h2 class="c4">Current Name</h2>
-        <p>Ashleigh</p><p>Robinson</p>
+        <p>Ashleigh</p><p id="last-name-display">Robinson</p>
       </section>
       <div class="love-button bc5">
         LOVE
@@ -68,105 +71,8 @@
   </body>
   <link rel="stylesheet" href="/css/master.css">
   <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
-  <script type="text/javascript">
-    var state = {
-      parent: 'mommy',
-      lastName: '',
-      email: '',
-      waitingOnServer: false,
-      emailInUse: false,
-      playButtonContent: 'incomplete-text',
-    };
-    var setState = function(context, value) {
-      if (context === 'parent') {
-        if(value === 'daddy') {
-          state.parent = 'daddy';
-          $('#future-mommy-button').addClass('button-unselected');
-          $('#future-daddy-button').removeClass('button-unselected');
-        } else {
-          state.parent = 'mommy';
-          $('#future-daddy-button').addClass('button-unselected');
-          $('#future-mommy-button').removeClass('button-unselected');
-        }
-      }
-      else if (context === 'lastName') {
-        state.lastName = value;
-      }
-      else if (context === 'email') {
-        state.email = value;
-        state.waitingOnServer = true;
-      }
+  <script type="text/javascript" src="nameGameScripts.js">
 
-      // decide what play button should say / validation
-      playButtonContentChanged = false;
-      if (context === 'lastName' || context === 'email') {
-        if(state.lastName === '' || state.email === '') {
-          if(state.playButtonContent !== 'incomplete-text') {
-            state.playButtonContent = 'incomplete-text';
-            playButtonContentChanged = true;
-          }
-        } else if(!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(state.email)) {
-          console.log(state.email);
-          if(state.playButtonContent !== 'bad-email-text') {
-            state.playButtonContent = 'bad-email-text';
-            playButtonContentChanged = true;
-          }
-        } else if(state.waitingOnServer) {
-          if(state.playButtonContent !== 'loading-text') {
-            state.playButtonContent = 'loading-text';
-            playButtonContentChanged = true;
-          }
-        } else if(state.emailInUse) {
-          if(state.playButtonContent !== 'resume-playing-text') {
-            state.playButtonContent = 'resume-playing-text';
-            playButtonContentChanged = true;
-          }
-        } else {
-          if(state.playButtonContent !== 'new-game-text') {
-            state.playButtonContent = 'new-game-text';
-            playButtonContentChanged = true;
-          }
-        }
-      }
-      if(playButtonContentChanged) {
-        $('#start-playing-button span').hide();
-        $('#start-playing-button .' + state.playButtonContent).show();
-      }
-    };
-    $(document).ready(function() {
-
-      // mommy / daddy selectors
-      $('#future-daddy-button').click(function() {
-        setState('parent', 'daddy');
-      });
-      $('#future-mommy-button').click(function() {
-        setState('parent', 'mommy');
-      });
-
-      // update state with input fields
-      $('#last-name').on('input', function() {
-        setState('lastName', this.value);
-      });
-      $('#email').on('input', function() {
-        setState('email', this.value);
-      });
-
-
-      // return to detail view
-      $('.namegame-header').click(function() {
-        if(!$(this).hasClass('namegame-header-full')) {
-          $(this).addClass('namegame-header-full');
-        }
-      });
-      // "Start Playing" button
-      $('#start-playing-button').click(function() {
-        // delay because the .namegame-header click handler depends on checking
-        // for presence of the namegame-header-full class
-        setTimeout(function() {
-          $('.namegame-header-full').removeClass('namegame-header-full');
-        }, 0);
-      });
-    })
   </script>
   <link href="https://fonts.googleapis.com/css?family=Baloo+Bhai" rel="stylesheet">
 </html>
