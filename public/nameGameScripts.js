@@ -63,6 +63,7 @@ var setState = function(context, value) {
       $('#future-daddy-button').addClass('button-unselected');
       $('#future-mommy-button').removeClass('button-unselected');
     }
+    setCookie('parent', state.parent, 100);
   }
 
   // Toggle Gender Button
@@ -144,6 +145,7 @@ var setState = function(context, value) {
 // document.ready
 $(document).ready(function() {
   setState('email', getCookie('email'));
+  setState('parent', getCookie('parent'));
   // mommy / daddy selectors
   $('#future-daddy-button').click(function() {
     setState('parent', 'daddy');
