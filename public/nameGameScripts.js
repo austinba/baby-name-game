@@ -50,10 +50,14 @@ var setState = function(context, value) {
   }
   else if (context === 'matchedNames') {
     state.matchedNames = value;
+    var allMatches = $('#all-matches');
+    allMatches.empty();
+    for (var i = 0; i < state.matchedNames.length; i++) {
+      allMatches.append($('<p />').text(state.matchedNames[i]));
+    }
   }
   else if (context === 'foundEmail') {
     state.foundEmail = !!value;
-    console.log(state.foundEmail);
   }
   // Form Validation / Response
   playButtonContentChanged = false;
