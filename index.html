@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Name Game</title>
     <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/master.css">
   </head>
 
   <body>
@@ -14,17 +13,22 @@
       <!-- Intro / Details Section -->
       <section class="bc3 c2 namegame-header namegame-header-full">
         <h1>Name Game</h1>
+        <div class="header-subtitle"><em>(Click here to see matches)</em></div>
         <div class="detail-view">
           <p>I am the</p>
-          <div id="future-mommy-button" class="button bc4 button-depressed">Future Mommy</div>
-          <div id="future-daddy-button" class="button bc4">Future Daddy</div>
-          <p>Remember us by this email:<br />
+          <div id="future-mommy-button" class="button bc4 button-unselected">Mommy</div>
+          <div id="future-daddy-button" class="button bc4">Daddy</div>
+          <p>Baby's last name:<br />
           </p>
-          <input type="text" style="width:240px" placeholder="email@address.com">
+          <input type="text" id="last-name" placeholder="So you can see the full name together.">
           <p></p>
-          <div id="start-playing-button" class="button bc1 c3"><big>Start Playing!</big></div>
-          <p>Your matches so far:</p>
+          <p>Mommy's email address:<br />
+          </p>
+          <input type="text" id="email" placeholder="Or Daddy's!  Just use the same email.">
+          <p></p>
+          <div id="start-playing-button" class="button bc1 c3"><big><big>Start/Resume Playing!</big></big></div>
           <div class="names-list">
+            <p>Your matches so far:</p>
             <p>Albert</p>
             <p>Tony</p>
             <p>Bubba</p>
@@ -54,27 +58,70 @@
       </div>
     </div>
   </body>
+  <link rel="stylesheet" href="/css/master.css">
   <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
   <script type="text/javascript">
+    var state = {
+      parent: 'mommy',
+      lastName: '',
+      email: '',
+      waitingOnServer: false,
+      emailInUse: false,
+    };
+    var setState = function(context, value) {
+      if (context === 'parent') {
+        if(value === 'daddy') {
+          state.parent = 'daddy';
+          $('#future-mommy-button').addClass('button-unselected');
+          $('#future-daddy-button').removeClass('button-unselected');
+        } else {
+          state.parent = 'mommy';
+          $('#future-daddy-button').addClass('button-unselected');
+          $('#future-mommy-button').removeClass('button-unselected');
+        }
+      }
+      else if (context === 'lastName') {
+        state.lastName = 'value';
+      }
+      else if (context === 'email') {
+        state.email = 'value';
+        state.waitingOnServer = true;
+      }
+    };
     $(document).ready(function() {
 
       // mommy / daddy selectors
-      $('#future-mommy-button').click(function() {
-        $('#future-mommy-button').addClass('button-depressed');
-        $('#future-daddy-button').removeClass('button-depressed');
-      });
       $('#future-daddy-button').click(function() {
-        $('#future-daddy-button').addClass('button-depressed');
-        $('#future-mommy-button').removeClass('button-depressed');
+        setState('parent', 'daddy');
+      });
+      $('#future-mommy-button').click(function() {
+        setState('parent', 'mommy');
       });
 
-      // start playing button
-      $('#start-playing-button').click(function() {
-        $('.namegame-header-full').removeClass('namegame-header-full');
+      // update state with input fields
+      $('#last-name').on('input', function() {
+        setState('lastName', this.value);
       });
-      $('.namegame-header-full').on('click', 'h1', function() {
-        $(this).parent().addClass('namegame-header-full');
+      $('#email').on('input', function() {
+        setState('email', this.value);
+      });
+
+
+      // return to detail view
+      $('.namegame-header').click(function() {
+        if(!$(this).hasClass('namegame-header-full')) {
+          $(this).addClass('namegame-header-full');
+        }
+      });
+      // "Start Playing" button
+      $('#start-playing-button').click(function() {
+        // delay because the .namegame-header click handler depends on checking
+        // for presence of the namegame-header-full class
+        setTimeout(function() {
+          $('.namegame-header-full').removeClass('namegame-header-full');
+        }, 0);
       });
     })
   </script>
+  <link href="https://fonts.googleapis.com/css?family=Baloo+Bhai" rel="stylesheet">
 </html>
