@@ -20,7 +20,7 @@
           <div id="future-daddy-button" class="button bc4">Daddy</div>
           <p>Baby's last name:<br />
           </p>
-          <input type="text" id="last-name" placeholder="So you can see the full name together.">
+          <input type="text" id="last-name" placeholder="Because it helps to see the full name.">
           <p></p>
           <p>Mommy's email address:<br />
           </p>
@@ -29,10 +29,10 @@
           <div id="start-playing-button" class="button bc1 c3">
             <big><big>
               <span class="incomplete-text">Fill out form to play!</span>
-              <span class="bad-email" hidden>Email looks incorrect</span>
-              <span class="loading-text" hidden>Loading...</span>
-              <span class="new-game-text" hidden>Start Playing!</span>
-              <span class="resume-playing-text" hidden>Resume Playing!</span>
+              <span class="bad-email-text" style="display:none">Email looks incorrect</span>
+              <span class="loading-text" style="display:none">Loading...</span>
+              <span class="new-game-text" style="display:none">Start Playing!</span>
+              <span class="resume-playing-text" style="display:none">Resume Playing!</span>
             </big></big>
           </div>
           <div class="names-list">
@@ -75,6 +75,7 @@
       email: '',
       waitingOnServer: false,
       emailInUse: false,
+      playButtonContent: 'incomplete-text',
     };
     var setState = function(context, value) {
       if (context === 'parent') {
@@ -89,11 +90,47 @@
         }
       }
       else if (context === 'lastName') {
-        state.lastName = 'value';
+        state.lastName = value;
       }
       else if (context === 'email') {
-        state.email = 'value';
+        state.email = value;
         state.waitingOnServer = true;
+      }
+
+      // decide what play button should say / validation
+      playButtonContentChanged = false;
+      if (context === 'lastName' || context === 'email') {
+        if(state.lastName === '' || state.email === '') {
+          if(state.playButtonContent !== 'incomplete-text') {
+            state.playButtonContent = 'incomplete-text';
+            playButtonContentChanged = true;
+          }
+        } else if(!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(state.email)) {
+          console.log(state.email);
+          if(state.playButtonContent !== 'bad-email-text') {
+            state.playButtonContent = 'bad-email-text';
+            playButtonContentChanged = true;
+          }
+        } else if(state.waitingOnServer) {
+          if(state.playButtonContent !== 'loading-text') {
+            state.playButtonContent = 'loading-text';
+            playButtonContentChanged = true;
+          }
+        } else if(state.emailInUse) {
+          if(state.playButtonContent !== 'resume-playing-text') {
+            state.playButtonContent = 'resume-playing-text';
+            playButtonContentChanged = true;
+          }
+        } else {
+          if(state.playButtonContent !== 'new-game-text') {
+            state.playButtonContent = 'new-game-text';
+            playButtonContentChanged = true;
+          }
+        }
+      }
+      if(playButtonContentChanged) {
+        $('#start-playing-button span').hide();
+        $('#start-playing-button .' + state.playButtonContent).show();
       }
     };
     $(document).ready(function() {
