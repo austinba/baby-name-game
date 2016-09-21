@@ -16,13 +16,13 @@
         <h1>Name Game</h1>
         <div class="detail-view">
           <p>I am the</p>
-          <div class="button bc4 button-selected">Future Mommy</div>
-          <div class="button bc4">Future Daddy</div>
+          <div id="future-mommy-button" class="button bc4 button-depressed">Future Mommy</div>
+          <div id="future-daddy-button" class="button bc4">Future Daddy</div>
           <p>Remember us by this email:<br />
           </p>
           <input type="text" style="width:240px" placeholder="email@address.com">
           <p></p>
-          <div class="button bc1 c3">Start Playing!</div>
+          <div id="start-playing-button" class="button bc1 c3"><big>Start Playing!</big></div>
           <p>Your matches so far:</p>
           <div class="names-list">
             <p>Albert</p>
@@ -55,4 +55,26 @@
     </div>
   </body>
   <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+
+      // mommy / daddy selectors
+      $('#future-mommy-button').click(function() {
+        $('#future-mommy-button').addClass('button-depressed');
+        $('#future-daddy-button').removeClass('button-depressed');
+      });
+      $('#future-daddy-button').click(function() {
+        $('#future-daddy-button').addClass('button-depressed');
+        $('#future-mommy-button').removeClass('button-depressed');
+      });
+
+      // start playing button
+      $('#start-playing-button').click(function() {
+        $('.namegame-header-full').removeClass('namegame-header-full');
+      });
+      $('.namegame-header-full').on('click', 'h1', function() {
+        $(this).parent().addClass('namegame-header-full');
+      });
+    })
+  </script>
 </html>

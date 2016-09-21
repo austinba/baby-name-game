@@ -29,10 +29,12 @@ html, body, body>div {
   height: 100%;
   overflow-y: auto;
   z-index: 100;
+  transition-duration: 500ms;
 }
 .namegame-header-full h1 {
   font-size: 50px;
   padding-bottom: 0px;
+  transition-duration: 500ms;
 }
 .namegame-header-full .detail-view {
   display: block;
@@ -40,7 +42,7 @@ html, body, body>div {
 }
 .namegame-header-full > .detail-view > p {
   margin-top: 25px;
-  margin-bottom: 3px
+  margin-bottom: 3px;
 }
 p {
   margin-top: 0;
@@ -120,12 +122,11 @@ h2 {
   box-shadow: 2px 3px 3px rgba(0, 0, 0, 0.4);
   margin-right: 5px;
 }
-.button-selected {
+.button-depressed {
   cursor: default;
   top: 2px;
   left: 2px;
   box-shadow: 0.5px 1px 1px rgba(0, 0, 0, 0.7);
-
 }
 @media (max-width: 600px) {
   .love-button {
