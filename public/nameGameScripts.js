@@ -7,7 +7,24 @@ var state = {
   foundEmail: false,
   playButtonContent: 'incomplete-text',
   matchedNames: [],
+  girlNamesQueue: [],
+  boyNamesQueue: [],
 };
+
+var updateNamesQueues = function() {
+  if(state.girlNamesQueue.length < 10) {
+    $.get('girl-names', { count: '10' }, function(data) {
+      if(Array.isArray(data.names)) state.girlNamesQueue.concat(data.names);
+    });
+  }
+  if(state.boyNamesQueue.length < 10) {
+    $.get('boy-names', { count: '10' }, function(data) {
+      if(Array.isArray(data.names)) state.boyNamesQueue.concat(data.names);
+    });
+  }
+}
+updateNamesQueues();
+
 var setState = function(context, value) {
 
   // Toggle Parent Button
@@ -38,6 +55,7 @@ var setState = function(context, value) {
   // Input in text fields
   else if (context === 'lastName') {
     state.lastName = value;
+    $('#last-name').val(state.lastName);
     $('#last-name-display').text(state.lastName);
   }
   else if (context === 'email') {
@@ -105,21 +123,40 @@ $(document).ready(function() {
   // boy / girl selectors
   $('#boy-button').click(function() {
     setState('gender', 'boy');
+    $.post(
+      'gender',
+      { email: state.email, gender: 'boy' }
+    );
   });
   $('#girl-button').click(function() {
     setState('gender', 'girl');
+    $.post(
+      'gender',
+      { email: state.email, gender: 'girl' }
+    );
   });
   // update state with input fields
   $('#last-name').on('input', function() {
     setState('lastName', this.value);
+    $.post(
+      'last-name',
+      { email: state.email, lastName: state.lastName}
+    );
   });
   $('#email').on('input', function() {
     setState('email', this.value);
     if(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(state.email)) {
-      $.get( 'matches-so-far', { email: state.email }, function(data) {
-        setState('waitingOnServer', false);
-        setState('matchedNames', data.matchedNames);
-        setState('foundEmail', data.foundEmail);
+      $.get(
+        'matches-so-far',
+        {
+          email: state.email
+        },
+        function(data) {
+          setState('waitingOnServer', false);
+          setState('matchedNames', data.matchedNames);
+          setState('foundEmail', data.foundEmail);
+          setState('lastName', data.lastName || '');
+          setState('gender', data.gender || 'boy');
       });
     }
   });
