@@ -39,21 +39,18 @@ function validateEmail(email) {
 function updateNamesQueues() {
   if(state.girlNamesQueue.length < 10) {
     $.get('girl-names', { count: '10' }, function(data) {
-      if(Array.isArray(data.names)) state.girlNamesQueue.concat(data.names);
-      setState('currentName', data.names[0]);
+      if(Array.isArray(data.names)) setState('concatGirlNames', data.names);
     });
   }
   if(state.boyNamesQueue.length < 10) {
     $.get('boy-names', { count: '10' }, function(data) {
-      if(Array.isArray(data.names)) state.boyNamesQueue.concat(data.names);
-      setState('currentName', data.names[0]);
+      if(Array.isArray(data.names)) setState('concatBoyNames', data.names);
     });
   }
 }
 updateNamesQueues();
 
 function setState(context, value) {
-
   // Toggle Parent Button
   if (context === 'parent') {
     if(value === 'daddy') {
@@ -109,9 +106,26 @@ function setState(context, value) {
   }
 
   // gamme play
-  else if (context === 'currentName') {
-    state.currentName = value;
-    $('#first-name-display').text(state.currentName);
+  else if (context === 'concatBoyNames') {
+    state.boyNamesQueue = state.boyNamesQueue.concat(value);
+    if(state.gender === 'boy') $('#first-name-display').text(state.boyNamesQueue[0]);
+  }
+  else if (context === 'concatGirlNames') {
+    state.girlNamesQueue =  state.girlNamesQueue.concat(value);
+    if(state.gender === 'girl') $('#first-name-display').text(state.girlNamesQueue[0]);
+  }
+  else if (context === 'dequeueFirstName') {
+    var dequeuedName;
+    if(state.gender === 'boy') {
+      dequeuedName = state.boyNamesQueue.shift();
+      $('#first-name-display').text(state.boyNamesQueue[0]);
+    } else {
+      dequeuedName = state.girlNamesQueue.shift();
+      $('#first-name-display').text(state.girlNamesQueue[0]);
+    }
+    updateNamesQueues();
+    return dequeuedName;
+
   }
 
   // Form Validation / Response
@@ -216,4 +230,10 @@ $(document).ready(function() {
       $('.namegame-header-full').removeClass('namegame-header-full');
     }, 0);
   });
-})
+  $('#love-button').click(function() {
+    setState('dequeueFirstName');
+  });
+  $('#next-button').click(function() {
+    setState('dequeueFirstName');
+  });
+});
