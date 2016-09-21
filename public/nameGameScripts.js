@@ -11,6 +11,31 @@ var state = {
   boyNamesQueue: [],
 };
 
+function setCookie(cname, cvalue, exdays) {
+  var d = new Date();
+  d.setTime(d.getTime() + (exdays*24*60*60*1000));
+  var expires = "expires="+ d.toUTCString();
+  document.cookie = cname + "=" + cvalue + "; " + expires;
+}
+
+function getCookie(cname) {
+  var name = cname + "=";
+  var ca = document.cookie.split(';');
+  for(var i = 0; i <ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0)==' ') {
+        c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+        return c.substring(name.length,c.length);
+    }
+  }
+  return "";
+}
+
+function validateEmail(email) {
+  return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
+}
 var updateNamesQueues = function() {
   if(state.girlNamesQueue.length < 10) {
     $.get('girl-names', { count: '10' }, function(data) {
@@ -61,6 +86,8 @@ var setState = function(context, value) {
   else if (context === 'email') {
     state.email = value;
     state.waitingOnServer = true;
+    $('#email').val(state.email);
+    setCookie('email', state.email, 100);
   }
 
   else if (context === 'waitingOnServer') {
@@ -85,7 +112,7 @@ var setState = function(context, value) {
         state.playButtonContent = 'incomplete-text';
         playButtonContentChanged = true;
       }
-    } else if(!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(state.email)) {
+    } else if(!validateEmail(state.email)) {
       if(state.playButtonContent !== 'bad-email-text') {
         state.playButtonContent = 'bad-email-text';
         playButtonContentChanged = true;
@@ -112,7 +139,11 @@ var setState = function(context, value) {
     $('#start-playing-button .' + state.playButtonContent).show();
   }
 };
+
+
+// document.ready
 $(document).ready(function() {
+  setState('email', getCookie('email'));
   // mommy / daddy selectors
   $('#future-daddy-button').click(function() {
     setState('parent', 'daddy');
@@ -145,7 +176,7 @@ $(document).ready(function() {
   });
   $('#email').on('input', function() {
     setState('email', this.value);
-    if(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(state.email)) {
+    if(validateEmail(state.email)) {
       $.get(
         'matches-so-far',
         {
