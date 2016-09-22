@@ -109,7 +109,6 @@ function setState(context, value) {
       });
     }
   }
-
   else if (context === 'waitingOnServer') {
     state.waitingOnServer = !!value;
   }
@@ -250,6 +249,7 @@ $(document).ready(function() {
   $('.namegame-header').click(function() {
     if(!$(this).hasClass('namegame-header-full')) {
       $(this).addClass('namegame-header-full');
+      setState('email', state.email); // refresh screen with any new matches
     }
   });
   // "Start Playing" button
