@@ -1,5 +1,6 @@
 var state = {
   parent: 'mommy',
+  genderSelection: 'boy',
   gender: 'boy',
   lastName: '',
   email: '',
@@ -67,20 +68,42 @@ function setState(context, value) {
   }
 
   // Toggle Gender Button
-  if (context === 'gender') {
+  else if (context === 'genderSelection') {
+    if(value === 'girl') {
+      setState('gender', 'girl');
+      state.genderSelection = 'girl';
+      $('#boy-button').addClass('button-unselected');
+      $('#alternate-button').addClass('button-unselected');
+      $('#girl-button').removeClass('button-unselected');
+    } else if (value === 'boy') {
+      setState('gender', 'boy');
+      state.genderSelection = 'boy';
+      $('#girl-button').addClass('button-unselected');
+      $('#alternate-button').addClass('button-unselected');
+      $('#boy-button').removeClass('button-unselected');
+    } else {
+      setState('randomizeGender');
+      state.genderSelection = 'alternate';
+      $('#girl-button').addClass('button-unselected');
+      $('#boy-button').addClass('button-unselected');
+      $('#alternate-button').removeClass('button-unselected');
+    }
+  }
+
+  else if (context === 'gender') {
     if(value === 'girl') {
       state.gender = 'girl';
-      $('#boy-button').addClass('button-unselected');
-      $('#girl-button').removeClass('button-unselected');
       $('#match-made-sign').addClass('c4').removeClass('c3');
       $('#current-name-label').addClass('c4').removeClass('c3');
     } else {
       state.gender = 'boy';
-      $('#girl-button').addClass('button-unselected');
-      $('#boy-button').removeClass('button-unselected');
       $('#match-made-sign').addClass('c3').removeClass('c4');
       $('#current-name-label').addClass('c3').removeClass('c4');
     }
+  }
+
+  else if(context === 'randomizeGender') {
+    setState('gender', Math.random() > 0.5 ? 'boy' : 'girl');
   }
   // Input in text fields
   else if (context === 'lastName') {
@@ -105,7 +128,7 @@ function setState(context, value) {
           setState('matchedNames', data.matchedNames);
           setState('foundEmail', data.foundEmail);
           setState('lastName', data.lastName || '');
-          setState('gender', data.gender || 'boy');
+          setState('genderSelection', data.gender || 'boy');
       });
     }
   }
@@ -136,8 +159,10 @@ function setState(context, value) {
   }
   else if (context === 'dequeueFirstName') {
     var dequeuedName;
+    if(state.genderSelection === 'alternate') setState('randomizeGender');
     if(state.gender === 'boy') {
       dequeuedName = state.boyNamesQueue.shift();
+
       $('#first-name-display').text(state.boyNamesQueue[0]);
     } else {
       dequeuedName = state.girlNamesQueue.shift();
@@ -221,17 +246,24 @@ $(document).ready(function() {
   });
   // boy / girl selectors
   $('#boy-button').click(function() {
-    setState('gender', 'boy');
+    setState('genderSelection', 'boy');
     $.post(
       'gender',
       { email: state.email, gender: 'boy' }
     );
   });
   $('#girl-button').click(function() {
-    setState('gender', 'girl');
+    setState('genderSelection', 'girl');
     $.post(
       'gender',
       { email: state.email, gender: 'girl' }
+    );
+  });
+  $('#alternate-button').click(function() {
+    setState('genderSelection', 'alternate');
+    $.post(
+      'gender',
+      { email: state.email, gender: 'alternate' }
     );
   });
   // update state with input fields
