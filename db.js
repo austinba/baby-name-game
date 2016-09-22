@@ -6,6 +6,9 @@ var db = mongoose.connection;
 module.exports = {
   updateUser: function (email, field, value, callback) {
     callback('database not ready');
+  },
+  getUser: function (email, callback) {
+    callback('database not ready');
   }
 }
 
@@ -15,9 +18,9 @@ db.once('open', function() {
     email: String,
     gender: String,
     lastName: String,
-    matches: [String],
-    mommyLikes: [String],
-    daddyLikes: [String],
+    matches: [{ name: String, gender: String }],
+    mommyLikes: [{ name: String, gender: String }],
+    daddyLikes: [{ name: String, gender: String }],
   });
   User = mongoose.model('User', userSchema);
   // update a user value

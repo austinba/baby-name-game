@@ -88,6 +88,21 @@ function setState(context, value) {
     state.waitingOnServer = true;
     $('#email').val(state.email);
     setCookie('email', state.email, 100);
+    if(validateEmail(state.email)) {
+      $.get(
+        'matches-so-far',
+        {
+          email: state.email
+        },
+        function(data) {
+          console.log(data);
+          setState('waitingOnServer', false);
+          setState('matchedNames', data.matchedNames);
+          setState('foundEmail', data.foundEmail);
+          setState('lastName', data.lastName || '');
+          setState('gender', data.gender || 'boy');
+      });
+    }
   }
 
   else if (context === 'waitingOnServer') {
@@ -98,7 +113,7 @@ function setState(context, value) {
     var allMatches = $('#all-matches');
     allMatches.empty();
     for (var i = 0; i < state.matchedNames.length; i++) {
-      allMatches.append($('<p />').text(state.matchedNames[i]));
+      allMatches.append($('<p />').text(state.matchedNames[i].name));
     }
   }
   else if (context === 'foundEmail') {
@@ -201,20 +216,6 @@ $(document).ready(function() {
   });
   $('#email').on('input', function() {
     setState('email', this.value);
-    if(validateEmail(state.email)) {
-      $.get(
-        'matches-so-far',
-        {
-          email: state.email
-        },
-        function(data) {
-          setState('waitingOnServer', false);
-          setState('matchedNames', data.matchedNames);
-          setState('foundEmail', data.foundEmail);
-          setState('lastName', data.lastName || '');
-          setState('gender', data.gender || 'boy');
-      });
-    }
   });
   // return to detail view
   $('.namegame-header').click(function() {
@@ -231,7 +232,12 @@ $(document).ready(function() {
     }, 0);
   });
   $('#love-button').click(function() {
-    setState('dequeueFirstName');
+    var name = setState('dequeueFirstName');
+    $.post(
+      'love-name',
+      { name: name, gender: state.gender, email: state.email, parent: state.parent},
+      function(data) {console.log(data)}
+    );
   });
   $('#next-button').click(function() {
     setState('dequeueFirstName');
