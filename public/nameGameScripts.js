@@ -113,7 +113,8 @@ function setState(context, value) {
     var allMatches = $('#all-matches');
     allMatches.empty();
     for (var i = 0; i < state.matchedNames.length; i++) {
-      allMatches.append($('<p />').text(state.matchedNames[i].name));
+      var color = state.matchedNames[i].gender === 'boy' ? 'c1' : 'c5';
+      allMatches.append($('<p />').text(state.matchedNames[i].name).addClass(color));
     }
   }
   else if (context === 'foundEmail') {
