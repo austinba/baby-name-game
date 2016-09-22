@@ -156,6 +156,11 @@ function setState(context, value) {
     state.matchedNames.push({ name: value.name, gender: value.gender });
     var color = value.gender === 'boy' ? 'c1' : 'c5';
     $('#all-matches').append($('<p />').text(value.name).addClass(color));
+    $('#matched-name').text(value.name);
+    $('#match-made-sign').slideDown(100);
+    setTimeout(function() {
+      $('#match-made-sign').slideUp(100);
+    }, 400);
   }
 
   // Form Validation / Response
