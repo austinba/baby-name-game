@@ -9,6 +9,7 @@ var state = {
   matchedNames: [],
   girlNamesQueue: [],
   boyNamesQueue: [],
+  playButtonClickable: false,
 };
 
 function setCookie(cname, cvalue, exdays) {
@@ -141,35 +142,53 @@ function setState(context, value) {
     }
     updateNamesQueues();
     return dequeuedName;
-
+  }
+  else if (context === 'playButtonClickable') {
+    state.playButtonClickable = value ? true : false;
+    if(!state.playButtonClickable) {
+      $('#start-playing-button').addClass('button-inactive');
+    }
+    else {
+      $('#start-playing-button').removeClass('button-inactive');
+    }
+  }
+  else if (context === 'addMatch') {
+    state.matchedNames.push({ name: value.name, gender: value.gender });
+    var color = value.gender === 'boy' ? 'c1' : 'c5';
+    $('#all-matches').append($('<p />').text(value.name).addClass(color));
   }
 
   // Form Validation / Response
   playButtonContentChanged = false;
   if (context === 'lastName' || context === 'email' || context === 'foundEmail') {
-    if(state.lastName === '' || state.email === '') {
-      if(state.playButtonContent !== 'incomplete-text') {
-        state.playButtonContent = 'incomplete-text';
-        playButtonContentChanged = true;
-      }
-    } else if(!validateEmail(state.email)) {
+    if(!validateEmail(state.email)) {
       if(state.playButtonContent !== 'bad-email-text') {
         state.playButtonContent = 'bad-email-text';
+        setState('playButtonClickable', false);
+        playButtonContentChanged = true;
+      }
+    } else if(state.lastName === '' || state.email === '') {
+      if(state.playButtonContent !== 'incomplete-text') {
+        state.playButtonContent = 'incomplete-text';
+        setState('playButtonClickable', false);
         playButtonContentChanged = true;
       }
     } else if(state.waitingOnServer) {
       if(state.playButtonContent !== 'loading-text') {
         state.playButtonContent = 'loading-text';
+        setState('playButtonClickable', false);
         playButtonContentChanged = true;
       }
     } else if(state.foundEmail) {
       if(state.playButtonContent !== 'resume-playing-text') {
         state.playButtonContent = 'resume-playing-text';
+        setState('playButtonClickable', true);
         playButtonContentChanged = true;
       }
     } else {
       if(state.playButtonContent !== 'new-game-text') {
         state.playButtonContent = 'new-game-text';
+        setState('playButtonClickable', true);
         playButtonContentChanged = true;
       }
     }
@@ -228,16 +247,22 @@ $(document).ready(function() {
   $('#start-playing-button').click(function() {
     // delay because the .namegame-header click handler depends on checking
     // for presence of the namegame-header-full class
-    setTimeout(function() {
-      $('.namegame-header-full').removeClass('namegame-header-full');
-    }, 0);
+    if(state.playButtonClickable) {
+      setTimeout(function() {
+        $('.namegame-header-full').removeClass('namegame-header-full');
+      }, 0);
+    }
   });
   $('#love-button').click(function() {
     var name = setState('dequeueFirstName');
     $.post(
       'love-name',
       { name: name, gender: state.gender, email: state.email, parent: state.parent},
-      function(data) {console.log(data)}
+      function(data) {
+        if(data.matchFound) {
+          setState('addMatch', { name: data.name, gender: data.gender });
+        }
+      }
     );
   });
   $('#next-button').click(function() {

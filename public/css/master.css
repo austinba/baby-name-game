@@ -169,6 +169,9 @@ h2 {
   background-color: inherit;
   /*box-shadow: 0.5px 1px 1px rgba(0, 0, 0, 0.7);*/
 }
+.button-inactive {
+  box-shadow: 0 0;
+}
 #start-playing-button {
   margin-top: 9px;
 }

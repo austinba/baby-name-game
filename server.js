@@ -69,7 +69,7 @@ app.post('/love-name', function(req, res) {
                 var update = { matches: { name: name, gender: gender } };
                 db.updateUser(email, '$push', update, function(error) {
                   if(error) res.status(500).send({ error: 'error saving match' });
-                  else res.send({ matchFound: true, name: name });
+                  else res.send({ matchFound: true, name: name, gender : gender });
                 });
             } else {
               if(error) res.status(500).send({ error: 'error saving match' });
