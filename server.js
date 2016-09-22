@@ -15,16 +15,31 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.get('/matches-so-far', function(req, res) {
-  res.send({
-    matchedNames: ['Austin', 'Jordan', 'Ben'],
-    foundEmail: true,
-    lastName: 'Baltes',
-    gender: 'boy',
+  db.getUser(req.query.email,
+    function(err, user) {
+      if(err) {
+        res.status(500).send('problem retrieving from database');
+      } else if(user) {
+        res.send({
+          matchedNames: (user.matches || []),
+          foundEmail: true,
+          lastName: (user.lastName || ''),
+          gender: (user.gender || 'boy'),
+        });
+      } else {
+        res.send({
+          foundEmail: false,
+          matchedNames: [],
+          lastName: '',
+          gender: 'boy',
+        });
+      }
   });
 });
 
 app.post('/last-name', function(req, res) {
   db.updateUser( req.body.email, 'lastName', req.body.lastName, function(error) {
+    console.log('saving last name');
     if(error) res.status(500).send(error);
     else res.send('Saved to db');
   });

@@ -15,6 +15,9 @@ db.once('open', function() {
     email: String,
     gender: String,
     lastName: String,
+    matches: [String],
+    mommyLikes: [String],
+    daddyLikes: [String],
   });
   User = mongoose.model('User', userSchema);
   // update a user value
@@ -40,5 +43,8 @@ db.once('open', function() {
         })
       }
     );
-  }
+  };
+  module.exports.getUser = function(email, callback) {
+    User.findOne({ email: email }, callback);
+  };
 });
