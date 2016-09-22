@@ -72,10 +72,14 @@ function setState(context, value) {
       state.gender = 'girl';
       $('#boy-button').addClass('button-unselected');
       $('#girl-button').removeClass('button-unselected');
+      $('#match-made-sign').addClass('c4').removeClass('c3');
+      $('#current-name-label').addClass('c4').removeClass('c3');
     } else {
       state.gender = 'boy';
       $('#girl-button').addClass('button-unselected');
       $('#boy-button').removeClass('button-unselected');
+      $('#match-made-sign').addClass('c3').removeClass('c4');
+      $('#current-name-label').addClass('c3').removeClass('c4');
     }
   }
   // Input in text fields
