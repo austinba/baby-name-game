@@ -115,7 +115,7 @@ app.get('/boy-names', function(req, res) {
   });
 });
 
-
-app.listen(80, function() {
-  console.log('app listening on port 80');
+var port = process.env.mode === 'dev' ? 3000 : 80;
+app.listen(port, function() {
+  console.log('app listening on port ' + port);
 });

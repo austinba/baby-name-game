@@ -44,6 +44,7 @@ html {
   -ms-user-select: none;
   -o-user-select: none;
   user-select: none;
+  -webkit-touch-callout: none !important;
 }
 div {
   box-sizing: border-box;

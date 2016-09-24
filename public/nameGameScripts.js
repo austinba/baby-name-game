@@ -307,7 +307,7 @@ $(document).ready(function() {
   });
   $('#love-button, #next-button, #start-playing-button, .namegame-header')
   .bind('mousedown touchstart', function() {
-    $(this).addClass('button-depressed');
+    if(!$(this).hasClass('namegame-header-full')) $(this).addClass('button-depressed');
   })
   .bind('mouseup touchend', function() {
     $(this).removeClass('button-depressed');
