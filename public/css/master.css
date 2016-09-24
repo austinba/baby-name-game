@@ -38,6 +38,13 @@ pinotnoir: CC5F4C
 .c5 {
   color: #CC5F4C;
 }
+html {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
 div {
   box-sizing: border-box;
 }
