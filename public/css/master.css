@@ -38,6 +38,9 @@ pinotnoir: CC5F4C
 .c5 {
   color: #CC5F4C;
 }
+div {
+  box-sizing: border-box;
+}
 html, body, body>div {
   height: 100%;
   font-family: 'Baloo Bhai', cursive;
@@ -107,6 +110,9 @@ h2 {
   text-align: center;
   margin-bottom: 26px;
 }
+#current-name-label {
+  font-size: 30px;
+}
 .current-name {
   display: block;
   font-size: 90px;
@@ -115,6 +121,7 @@ h2 {
   position: absolute;
   bottom: 50%;
   margin-left: 50%;
+  width: 100%;
   transform: translate(-50%, 30%);
 }
 @media (max-width: 600px) {
@@ -126,7 +133,7 @@ h2 {
   line-height: 80%;
   overflow: hidden;
 }
-.love-button {
+#love-button {
   display: block;
   text-align: center;
   font-size: 50px;
@@ -141,7 +148,7 @@ h2 {
   box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.3);
   cursor: pointer;
 }
-.next-button {
+#next-button {
   display: block;
   text-align: center;
   font-size: 35px;
@@ -151,7 +158,9 @@ h2 {
   bottom: 15px;
   padding-top: 5px;
   padding-bottom: 10px;
-  width: 50%;
+  border-radius: 7px 20px 40px 30px;
+  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.3);
+  width: 30%;
   cursor: pointer;
 }
 .button {
@@ -162,6 +171,9 @@ h2 {
   padding: 5px 15px;
   box-shadow: 2px 3px 3px rgba(0, 0, 0, 0.4);
   margin-right: 5px;
+}
+.button-depressed {
+  border: 3px solid rgba(0, 0, 0, 0.5);
 }
 .button-unselected {
   top: -2px;
@@ -176,13 +188,13 @@ h2 {
   margin-top: 9px;
 }
 @media (max-width: 600px) {
-  .love-button {
+  #love-button {
     font-size: 30px;
     bottom: 55px;
     padding-top: 10px;
     padding-bottom: 10px;
   }
-  .next-button {
+  #next-button {
     font-size: 20px;
     bottom: 5px;
     padding-top: 5px;

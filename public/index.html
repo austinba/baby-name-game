@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no" />
     <title>Name Game</title>
     <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
   </head>
@@ -13,8 +13,9 @@
       <!-- Intro / Details Section -->
       <section class="bc3 c2 namegame-header namegame-header-full">
         <h1>Name Game</h1>
-        <div class="header-subtitle"><em>(Click here for options and matches)</em></div>
+        <div class="header-subtitle"><em class="c5">(Click here for options and matches)</em></div>
         <div class="detail-view">
+          <p>Tell us the names you LOVE, and we'll tell you when both you and your other love the same name!</p>
           <p>Mommy's email address:<br />
           </p>
           <input type="text" id="email" placeholder="Or Daddy's!  Just use the same email.">
@@ -30,7 +31,7 @@
           </p>
           <input type="text" id="last-name" placeholder="Because it helps to see the full name.">
           <p></p>
-          <div id="start-playing-button" class="button bc1 c3 button-inactive">
+          <div id="start-playing-button" class="bc1 c3 button-inactive">
             <big><big>
               <span class="incomplete-text">Fill out form to play!</span>
               <span class="bad-email-text" style="display:none">Email looks incorrect</span>
@@ -54,10 +55,10 @@
           <h2 id="current-name-label" class="c4">Current Name</h2>
           <p id="first-name-display">Ashleigh</p><p id="last-name-display">Robinson</p>
         </div>
-        <div id="love-button" class="love-button bc5">
+        <div id="love-button" class="love-button bc1 button">
           LOVE
         </div>
-        <div id="next-button" class="next-button">
+        <div id="next-button" class="next-button bc5">
           NEXT
         </div>
         <div id="match-made-sign" class="c4 bc2">

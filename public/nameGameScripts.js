@@ -123,7 +123,6 @@ function setState(context, value) {
           email: state.email
         },
         function(data) {
-          console.log(data);
           setState('waitingOnServer', false);
           setState('matchedNames', data.matchedNames);
           setState('foundEmail', data.foundEmail);
@@ -305,6 +304,13 @@ $(document).ready(function() {
         }
       }
     );
+  });
+  $('#love-button, #next-button, #start-playing-button, .namegame-header')
+  .bind('mousedown touchstart', function() {
+    $(this).addClass('button-depressed');
+  })
+  .bind('mouseup touchend', function() {
+    $(this).removeClass('button-depressed');
   });
   $('#next-button').click(function() {
     setState('dequeueFirstName');
