@@ -115,7 +115,7 @@ function setState(context, value) {
     state.email = value;
     state.waitingOnServer = true;
     $('#email').val(state.email);
-    setCookie('email', state.email, 100);
+    setCookie('email', state.email.toLowerCase(), 100);
     if(validateEmail(state.email)) {
       $.get(
         'matches-so-far',
@@ -234,7 +234,7 @@ function setState(context, value) {
 
 // document.ready
 $(document).ready(function() {
-  setState('email', getCookie('email'));
+  setState('email', getCookie('email').toLowerCase());
   setState('parent', getCookie('parent'));
   // mommy / daddy selectors
   $('#future-daddy-button').click(function() {

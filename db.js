@@ -28,7 +28,7 @@ db.once('open', function() {
     var update = {};
     update[field] = value;
     User.findOneAndUpdate(
-      { email: email }, // query
+      { email: email.toLowerCase() }, // query
       update, // update
       { upsert: true }, // options
       function (error, result) {
@@ -48,6 +48,6 @@ db.once('open', function() {
     );
   };
   module.exports.getUser = function(email, callback) {
-    User.findOne({ email: email }, callback);
+    User.findOne({ email: email.toLowerCase() }, callback);
   };
 });
